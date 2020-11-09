@@ -2,8 +2,6 @@ C++ Project Base
 ================
 [![Build Status](https://gitlab.com/Trenkwalder/cpp-project-base/badges/master/pipeline.svg)](https://gitlab.com/Trenkwalder/cpp-project-base/-/commits/master)
 
-https://gitlab.com/Trenkwalder/-/commits/master
-
 This repo contains a small C++ project (main.cpp + src/dummy.cpp).
 It is setup with **CMAKE** and is used to test the Google Test (GTest environment).
 Note that the tests are so designed that each test is checked for memory leaks under the condition that the tests are called with Valgrind.
@@ -51,7 +49,7 @@ valgrind --leak-check=full --show-leak-kinds=all --tool=memcheck --log-file="bui
 ```
 
 
-Where can I fund stuff?
+Where can I find stuff?
 -----------------------
 
 This project is organisied in the following way:
