@@ -1,3 +1,7 @@
-# Cpp Project Base with CI
+# C++ Project Base
 
-This Project is the basis for other modern C++ projects to quickly utilise Gitlab CI, Static Analyzers, and GTests
+This repo is meant to be the base of any of C++ projects.
+It will test the code with: 
+- static analysers
+- gtest
+- code-coverage

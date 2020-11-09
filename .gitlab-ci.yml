@@ -1,0 +1,77 @@
+# This file is a template, and might need editing before it works on your project.
+# use the official gcc image, based on debian
+# can use verions as well, like gcc:5.2
+# see https://hub.docker.com/_/gcc/
+image: gcc
+
+stages: 
+  - build
+  - test
+  - run
+
+before_script:
+  - apt update 
+  - apt upgrade -y
+
+
+build:
+  stage: build
+
+  before_script: 
+    - apt update 
+    - apt upgrade -y
+    - apt-get install -y -qq make autoconf cmake valgrind build-essential libgtest-dev
+  
+  script:
+    - mkdir build
+    - cd build/
+    - cmake ..
+    - make all
+
+  artifacts:
+    paths:
+      - build/tests/tests
+      - build/tests/tests_coverage
+      - build/application
+
+# run tests using the binary built before
+general-test:
+  stage: test
+  script:
+    - build/tests/tests
+
+memory-test:
+  stage: test
+
+  before_script: 
+    - apt update 
+    - apt upgrade -y
+    - apt-get install -y -qq valgrind
+    
+  script:
+    - valgrind --leak-check=full --show-leak-kinds=all --tool=memcheck --log-file="build/tests/tests_valgrind.log" build/tests/tests
+    
+  artifacts:
+    paths:
+      - build/tests/tests_valgrind.log
+
+static-test:
+  stage: test
+
+  before_script: 
+    - apt update 
+    - apt upgrade -y
+    - apt-get install -y -qq cppcheck
+    
+  script:
+    - cppcheck --language=c++ --std=c++20 --enable=all src/* 2>build/cppcheck.log
+    
+  artifacts:
+    paths:
+      - build/cppcheck.log
+  allow_failure: true
+
+run:
+  stage: run
+  script:
+    - build/application
