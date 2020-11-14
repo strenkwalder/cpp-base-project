@@ -17,7 +17,7 @@ public:
     MemoryLeaks(MemoryLeaks &&other) = default;
     MemoryLeaks &operator=(MemoryLeaks &&other) = default;
 
-    virtual ~MemoryLeaks();
+    virtual ~MemoryLeaks() = default;
 
     bool hasBeenLeaks();
     static MemoryLeaks measureLeaks();

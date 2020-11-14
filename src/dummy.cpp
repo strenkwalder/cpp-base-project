@@ -2,26 +2,13 @@
 
 Dummy::Dummy()
 {
-    //m_data = new int[5];
+    m_data = nullptr;
 }
 
-Dummy::Dummy(const Dummy &other){
-    m_data = other.m_data;
-}
-
-Dummy::Dummy(Dummy &&other){
-    m_data = other.m_data;
-}
-
-Dummy &Dummy::operator=(const Dummy &other){
-    m_data = other.m_data;
-    return *this;
-}
-Dummy &Dummy::operator=(Dummy &&other){
-    m_data = other.m_data;
-    return *this;
-}
-
-int *Dummy::data(){
+int * &Dummy::data(){
     return m_data;
+}
+
+bool Dummy::hasData(){
+    return (m_data != nullptr);
 }

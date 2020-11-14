@@ -8,12 +8,14 @@ public:
     Dummy();
     ~Dummy() = default;
 
-    Dummy(const Dummy &other);
-    Dummy(Dummy &&other);
-    Dummy &operator=(const Dummy &other);
-    Dummy &operator=(Dummy &&other);
+    Dummy(const Dummy &other) = default;
+    Dummy(Dummy &&other) = default;
+    Dummy &operator=(const Dummy &other) = default;
+    Dummy &operator=(Dummy &&other) = default;
 
-    int *data();
+    bool hasData();
+
+    int *&data();
 private:
     int *m_data;
 };

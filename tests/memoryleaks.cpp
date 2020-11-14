@@ -20,8 +20,6 @@ MemoryLeaks::MemoryLeaks(size_t leaked,
         _reachable(reachable),
         _suppressed(suppressed){}
 
-MemoryLeaks::~MemoryLeaks(){}
-
 bool MemoryLeaks::hasBeenLeaks(){
     return _leaked + _dubious + _reachable + _suppressed;//false if all == 0
 }
