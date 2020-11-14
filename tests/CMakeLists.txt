@@ -10,6 +10,9 @@ cmake_minimum_required(VERSION 3.5)
 enable_testing()
 find_package(GTest REQUIRED)
 #find_package(lcov REQUIRED)
+#find_program( GCOV_PATH gcov REQUIRED)
+#find_program( LCOV_PATH  NAMES lcov lcov.bat lcov.exe lcov.perl REQUIRED)
+#find_program( GENHTML_PATH NAMES genhtml genhtml.perl genhtml.bat REQUIRED)
 
 set (Test_SOURCES ${main_SOURCES} 
 	${PROJECT_SOURCE_DIR}/tests/main.cpp
