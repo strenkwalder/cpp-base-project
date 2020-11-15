@@ -20,7 +20,7 @@ build:
   before_script: 
     - apt update 
     - apt upgrade -y
-    - apt-get install -y -qq make autoconf cmake valgrind build-essential libgtest-dev
+    - apt install -y -qq make autoconf cmake valgrind build-essential libgtest-dev clang
   
   script:
     - mkdir build
@@ -47,7 +47,7 @@ memory-test:
   before_script: 
     - apt update 
     - apt upgrade -y
-    - apt-get install -y -qq valgrind
+    - apt install -y -qq valgrind
     
   script:
     - valgrind --leak-check=full --show-leak-kinds=all --tool=memcheck --log-file="tests_valgrind.log" build/tests/tests
@@ -62,7 +62,7 @@ coverage-test:
   before_script: 
     - apt update 
     - apt upgrade -y
-    - apt-get install -y -qq lcov
+    - apt install -y -qq lcov
     
   script:
     - mkdir coverage
@@ -83,10 +83,10 @@ static-test:
   before_script: 
     - apt update 
     - apt upgrade -y
-    - apt-get install -y -qq cppcheck
+    - apt-get install -y -qq clang-tidy
     
   script:
-    - cppcheck --language=c++ --std=c++20 --enable=all src/* 2>build/cppcheck.log
+    - clang-tidy -checks='*' src/* -- - std=c++20 > cppcheck.log 2>&1
     
   artifacts:
     paths:
