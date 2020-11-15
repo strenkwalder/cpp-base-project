@@ -23,7 +23,7 @@ build:
     - apt install -y -qq make autoconf cmake valgrind build-essential libgtest-dev clang
   
   script:
-    - mkdir build
+    - mkdir -p build
     - cd build/
     - cmake ..
     - make all
@@ -65,11 +65,17 @@ coverage-test:
     - apt install -y -qq lcov
     
   script:
-    - mkdir coverage
-    - valgrind --leak-check=full --show-leak-kinds=all --tool=memcheck --log-file="tests_coverage_valgrind.log" build/tests/tests_coverage
-    - lcov --capture --directory build/tests/CMakeFiles/tests_coverage.dir --output-file coverage.info
+    - mkdir -p build
+    - cd build/
+    - cmake ..
+    - make tests_coverage
+    - cd ..
+    - mkdir -p coverage
+    - valgrind --leak-check=full --show-leak-kinds=all --tool=memcheck build/tests/tests_coverage > tests_coverage_valgrind.log 2>&1
+    - lcov --capture --no-external --directory build/tests/CMakeFiles/tests_coverage.dir --output-file coverage.info
+    - lcov --remove coverage.info '/usr/include/*' '/usr/lib/*' -o coverage.info
     - genhtml coverage.info --output-directory coverage/
-    - bash <(curl -s https://codecov.io/bash) -t .codecov
+    - bash <(curl -s https://codecov.io/bash) -t .codecov -f coverage.info || echo "Codecov did not collect coverage reports"
     
   artifacts:
     paths:
