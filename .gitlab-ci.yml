@@ -2,7 +2,7 @@
 # use the official gcc image, based on debian
 # can use verions as well, like gcc:5.2
 # see https://hub.docker.com/_/gcc/
-image: gcc
+image: trenkwalder/cpp-dev-ubuntu:20.04
 
 stages: 
   - build
@@ -33,6 +33,7 @@ build:
       - build/tests/tests
       - build/tests/tests_coverage
       - build/application
+      - build/application.lib.so
 
 # run tests using the binary built before
 general-test:
@@ -49,11 +50,11 @@ memory-test:
     - apt-get install -y -qq valgrind
     
   script:
-    - valgrind --leak-check=full --show-leak-kinds=all --tool=memcheck --log-file="build/tests/tests_valgrind.log" build/tests/tests
+    - valgrind --leak-check=full --show-leak-kinds=all --tool=memcheck --log-file="tests_valgrind.log" build/tests/tests
     
   artifacts:
     paths:
-      - build/tests/tests_valgrind.log
+      - tests_valgrind.log
 
 coverage-test:
   stage: test
@@ -65,12 +66,15 @@ coverage-test:
     
   script:
     - mkdir coverage
-    - build/tests/tests_coverage
-    - lcov --capture --directory ./ --output-file coverage.info
+    - valgrind --leak-check=full --show-leak-kinds=all --tool=memcheck --log-file="tests_coverage_valgrind.log" build/tests/tests_coverage
+    - lcov --capture --directory build/tests/CMakeFiles/tests_coverage.dir --output-file coverage.info
     - genhtml coverage.info --output-directory coverage/
+    - bash <(curl -s https://codecov.io/bash) -t .codecov
     
   artifacts:
     paths:
+      - tests_coverage_valgrind.log
+      - coverage.info
       - coverage/
   
 static-test:
